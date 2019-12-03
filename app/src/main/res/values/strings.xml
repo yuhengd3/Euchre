@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Euchre</string>
+    <string-array name="suits">
+        <item>Heart</item>
+        <item>Diamond</item>
+        <item>Spade</item>
+        <item>Club</item>
+    </string-array>
+</resources>
