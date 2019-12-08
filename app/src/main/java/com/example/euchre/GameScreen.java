@@ -28,6 +28,7 @@ public class GameScreen extends AppCompatActivity {
     private String myName;
     private TextView messages;
     private CardButton[] myCards = new CardButton[5];
+    private TextView scores;
 
     private class CardButton {
         private Card card;
@@ -49,6 +50,7 @@ public class GameScreen extends AppCompatActivity {
         }
 
         public void cardsToClick() {
+            button.setClickable(true);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -59,6 +61,9 @@ public class GameScreen extends AppCompatActivity {
                         obj.put("rank", card.getRank());
                         socket.emit("cardPlayed", obj);
                         Log.d("ASD", "play " + obj.toString());
+                        for (CardButton c : myCards) {
+                            c.disable();
+                        }
                         button.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         Log.e("ASD", e.toString());
@@ -205,7 +210,7 @@ public class GameScreen extends AppCompatActivity {
                     try {
                         int trumpSuit = data.getInt("trump");
                         String player = data.getString("player");
-                        messages.append(player + " makes " + getResources().getStringArray(R.array.suits)[trumpSuit] + "the Trump suit!");
+                        messages.append(player + " makes " + getResources().getStringArray(R.array.suits)[trumpSuit] + "the Trump suit!\n");
                         TextView trumpText = findViewById(R.id.trump);
                         trumpText.setText("Trump: " + getResources().getStringArray(R.array.suits)[trumpSuit]);
                     } catch (JSONException e) {
@@ -293,6 +298,121 @@ public class GameScreen extends AppCompatActivity {
         }
     };
 
+    private Emitter.Listener onPlayCard = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            Log.v("ASD", "pick up");
+            GameScreen.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (CardButton c : myCards) {
+                        c.cardsToClick();
+                    }
+                }
+            });
+            Toast.makeText(GameScreen.this, "Your Turn!",
+                    Toast.LENGTH_LONG).show();
+        }
+    };
+
+    private Emitter.Listener onCardsUpdate = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            GameScreen.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+
+                    try {
+                        Card newCard = new Card(data.getInt("suit"), data.getInt("rank"));
+                        messages.append(data.getString("player") + "played " + newCard.toString() + ".\n");
+                    } catch (JSONException e) {
+                        Log.v("Gosn", e.toString());
+                    }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onTrick = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            GameScreen.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+                        String player = data.getString("player");
+                        messages.append(player + " gets a trick!!!\n");
+                    } catch (JSONException e) {
+                        Log.v("ASD", e.toString());
+                    }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onScoreUpdate = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            GameScreen.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+                        int oneScore = data.getInt("teamOne");
+                        int twoScore = data.getInt("teamTwo");
+                        String message = data.getString("message");
+                        messages.append(message + "\n");
+                        scores.setText("TeamOne: " + oneScore + "\nTeamTwo: " + twoScore);
+                    } catch (JSONException e) {
+                        Log.v("ASD", e.toString());
+                    }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onGameOver = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            GameScreen.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+                        String winner = data.getString("winner");
+                        String player1 = data.getString("player1");
+                        String player2 = data.getString("player2");
+                        messages.append(winner + " wins the game!!\n");
+                        String message;
+                        if (myName.equals(player1) || myName.equals(player2)) {
+                            message = "Congratulations! You Win!";
+                        } else {
+                            message = "Sorry, you lost.";
+                        }
+                        AlertDialog.Builder builder = new AlertDialog.Builder(GameScreen.this);
+                        builder.setMessage(message);
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                socket.disconnect();
+                                Intent intent = new Intent(GameScreen.this, createGame.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    } catch (JSONException e) {
+                        Log.v("ASD", e.toString());
+                    }
+                }
+            });
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -301,6 +421,7 @@ public class GameScreen extends AppCompatActivity {
         myName = intent.getStringExtra("myName");
 
         messages = findViewById(R.id.messages);
+        scores = findViewById(R.id.scores);
 
         socket.connect();
         socket.on("deal", onDeal);
@@ -308,5 +429,10 @@ public class GameScreen extends AppCompatActivity {
         socket.on("make trump", onTrump);
         socket.on("pick up", onPickUp);
         socket.on("pick trump suit", onPickTrumpSuit);
+        socket.on("play card", onPlayCard);
+        socket.on("cardsUpdate", onCardsUpdate);
+        socket.on("trick", onTrick);
+        socket.on("scoreUpdate", onScoreUpdate);
+        socket.on("gameOver", onGameOver);
     }
 }
