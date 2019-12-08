@@ -72,7 +72,7 @@ public class GameScreen extends AppCompatActivity {
             });
         }
         public void disable() { button.setClickable(false); }
-        public void enable() { button.setClickable(true);}
+        public void makeVisible() { button.setVisibility(View.VISIBLE);}
         public void changeCard() {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -147,7 +147,7 @@ public class GameScreen extends AppCompatActivity {
                         messages.append("The dealer is " + dealer + ".\n");
                         messages.append("The first card is " + firstCard.toString() + ".\n");
                         for (CardButton c : myCards) {
-                            c.enable();
+                            c.makeVisible();
                         }
                     } catch (JSONException e) {
                         Log.v("Gosn", e.toString());
