@@ -6,4 +6,12 @@
         <item>Spade</item>
         <item>Club</item>
     </string-array>
+    <string-array name="ranks">
+        <item>9</item>
+        <item>10</item>
+        <item>J</item>
+        <item>Q</item>
+        <item>K</item>
+        <item>A</item>
+    </string-array>
 </resources>
