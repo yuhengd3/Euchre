@@ -308,10 +308,10 @@ public class GameScreen extends AppCompatActivity {
                     for (CardButton c : myCards) {
                         c.cardsToClick();
                     }
+                    Toast.makeText(GameScreen.this, "Your Turn!",
+                            Toast.LENGTH_LONG).show();
                 }
             });
-            Toast.makeText(GameScreen.this, "Your Turn!",
-                    Toast.LENGTH_LONG).show();
         }
     };
 
