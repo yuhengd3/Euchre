@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -56,7 +57,7 @@ public class GameScreen extends AppCompatActivity {
                         obj.put("player", myName);
                         obj.put("suit", card.getSuit());
                         obj.put("rank", card.getRank());
-                        socket.emit("play", obj);
+                        socket.emit("cardPlayed", obj);
                         Log.d("ASD", "play " + obj.toString());
                         button.setVisibility(View.GONE);
                     } catch (JSONException e) {
@@ -218,14 +219,75 @@ public class GameScreen extends AppCompatActivity {
     private Emitter.Listener onPickUp = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
+            Log.v("ASD", "pick up");
             GameScreen.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(GameScreen.this, "Choose a card to get rid of.",
+                    Log.v("ASD", "dealer pick up ");
+                    Toast.makeText(GameScreen.this, "Select a card to get rid of.",
                             Toast.LENGTH_LONG).show();
                     for (CardButton c : myCards) {
                         c.changeCard();
                     }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onPickTrumpSuit = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            GameScreen.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GameScreen.this);
+                    LayoutInflater inflater = GameScreen.this.getLayoutInflater();
+                    final View dialogView = inflater.inflate(R.layout.choose_trump_suit, null);
+                    builder.setView(dialogView);
+                    builder.setCancelable(false);
+                    final AlertDialog dialog = builder.create();
+                    Button[] buttons = new Button[3];
+                    buttons[0] = dialogView.findViewById(R.id.trump0);
+                    buttons[1] = dialogView.findViewById(R.id.trump1);
+                    buttons[2] = dialogView.findViewById(R.id.trump2);
+                    int j = 0;
+                    for (int i = 0; i < 4; i++) {
+                        if (i == firstCard.getSuit()) continue;
+                        final int c = i;
+                        buttons[j].setText(getResources().getStringArray(R.array.suits)[i]);
+                        buttons[j].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                JSONObject o = new JSONObject();
+                                try {
+                                    o.put("result", true);
+                                    o.put("player", myName);
+                                    o.put("trump", c);
+                                    socket.emit("select suit", o);
+                                    dialog.dismiss();
+                                } catch (JSONException e) {
+                                    Log.e("ASD", "onClick: " + e.toString());
+                                }
+                            }
+                        });
+                        j++;
+                    }
+                    Button passButton = dialogView.findViewById(R.id.pass);
+                    passButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            JSONObject o = new JSONObject();
+                            try {
+                                o.put("result", false);
+                                o.put("player", myName);
+                                socket.emit("select suit", o);
+                                dialog.dismiss();
+                            } catch (JSONException e) {
+                                Log.e("ASD", "onClick: " + e.toString());
+                            }
+                        }
+                    });
+                    dialog.show();
                 }
             });
         }
@@ -245,5 +307,6 @@ public class GameScreen extends AppCompatActivity {
         socket.on("order?", onOrder);
         socket.on("make trump", onTrump);
         socket.on("pick up", onPickUp);
+        socket.on("pick trump suit", onPickTrumpSuit);
     }
 }
