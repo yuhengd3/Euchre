@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,8 @@ import java.net.URISyntaxException;
 public class GameScreen extends AppCompatActivity {
     private Card firstCard = new Card(-1, -1);
     private String myName;
+    private String myTeammate;
+    private String myTeam;
     private TextView messages;
     private CardButton[] myCards = new CardButton[5];
     private TextView scores;
@@ -327,7 +330,7 @@ public class GameScreen extends AppCompatActivity {
 
                     try {
                         Card newCard = new Card(data.getInt("suit"), data.getInt("rank"));
-                        messages.append(data.getString("player") + "played " + newCard.toString() + ".\n");
+                        messages.append(data.getString("player") + " played " + newCard.toString() + ".\n");
                     } catch (JSONException e) {
                         Log.v("Gosn", e.toString());
                     }
@@ -421,8 +424,14 @@ public class GameScreen extends AppCompatActivity {
         setContentView(R.layout.activity_game_screen);
         Intent intent = getIntent();
         myName = intent.getStringExtra("myName");
+        myTeammate = intent.getStringExtra("myTeammate");
+        myTeam = intent.getStringExtra("myTeam");
+
+        TextView teamText = findViewById(R.id.teamText);
+        teamText.setText("My Team: " + myTeam + "\nMy Teammate: " + myTeammate);
 
         messages = findViewById(R.id.messages);
+        messages.setMovementMethod(new ScrollingMovementMethod());
         scores = findViewById(R.id.scores);
 
         socket.connect();

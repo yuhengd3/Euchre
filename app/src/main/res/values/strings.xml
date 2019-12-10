@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Euchre</string>
     <string-array name="suits">
+        <item>♥️</item>
+        <item>♦️</item>
+        <item>♠️</item>
+        <item>♣️</item>
+    </string-array>
+    <string-array name="suitsString">
         <item>Heart</item>
         <item>Diamond</item>
         <item>Spade</item>

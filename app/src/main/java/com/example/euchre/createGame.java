@@ -120,10 +120,20 @@ public class createGame extends AppCompatActivity {
             createGame.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(createGame.this, GameScreen.class);
-                    intent.putExtra("myName", myName);
-                    startActivity(intent);
-                    finish();
+                    JSONObject data = (JSONObject) args[0];
+
+                    try {
+                        String myTeammate = data.getString("myTeammate");
+                        String myTeam = data.getString("myTeam");
+                        Intent intent = new Intent(createGame.this, GameScreen.class);
+                        intent.putExtra("myName", myName);
+                        intent.putExtra("myTeammate", myTeammate);
+                        intent.putExtra("myTeam", myTeam);
+                        startActivity(intent);
+                        finish();
+                    } catch (JSONException e) {
+                        Log.e("ASD", e.toString());
+                    }
                 }
             });
         }

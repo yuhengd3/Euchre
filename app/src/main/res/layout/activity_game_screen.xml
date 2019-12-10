@@ -16,38 +16,51 @@
             android:id="@+id/trump"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trump: ♠️"
+            android:text="Trump: ️"
             android:textSize="32dp"
             android:layout_marginTop="40dp"
             android:layout_marginLeft="130dp"/>
 
         <TextView
+            android:id="@+id/teamText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Team:\nMy Teammate:"
+            android:textSize="16dp"
+            android:layout_marginLeft="40dp" />
+
+        <TextView
             android:id="@+id/messages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="40dp"
-            android:text="Game Start\nDealer: Jack\nFirst Card: 10 ♠️\nHendry passes\n" />
+            android:maxLines="5"
+            android:gravity="bottom"
+            android:scrollbars="vertical"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="40dp"
+            android:text="Game Start\nDealer: \nFirst Card:️\n" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="50dp"
-                android:text="Your Turn!" />
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_marginStart="50dp"-->
+<!--                android:visibility="invisible"-->
+<!--                android:text="Your Turn!" />-->
 
             <TextView
                 android:id="@+id/scores"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="240dp"
                 android:layout_marginTop="13dp"
                 android:padding="10dp"
-                android:text="Our score: 4\nTheir Score: 3" />
+                android:text="Our score: 0\nTheir Score: 0" />
 
         </LinearLayout>
 
@@ -55,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="25dp"
             android:paddingLeft="158dp" >
 
             <Button

@@ -7,37 +7,59 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="310dp"
-        android:hint="UserName" />
+<!--    <EditText-->
+<!--        android:id="@+id/username"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="310dp"-->
+<!--        android:hint="UserName" />-->
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:hint="password"
-        android:inputType="textPassword" />
+<!--    <EditText-->
+<!--        android:id="@+id/password"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:hint="password"-->
+<!--        android:inputType="textPassword" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/login"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#3f76ff"-->
+<!--        android:text="Login"-->
+<!--        android:textColor="#fff" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/signup"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#3f76ff"-->
+<!--        android:text="Sign Up"-->
+<!--        android:layout_marginTop="18dp"-->
+<!--        android:textColor="#fff" />-->
 
     <Button
-        android:id="@+id/login"
-        android:layout_width="match_parent"
+        android:id="@+id/button333"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#3f76ff"
-        android:text="Login"
-        android:textColor="#fff" />
+        android:layout_margin="40dp" />
 
-    <Button
-        android:id="@+id/signup"
+    <TextView
+        android:id="@+id/text333"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#3f76ff"
-        android:text="Sign Up"
-        android:layout_marginTop="18dp"
-        android:textColor="#fff" />
+        android:scrollbars="vertical"
+        android:gravity="bottom"
+        android:background="#cccccc"
+        android:maxLines="6"
+        android:text="start: \n"
+        android:textSize="18dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="end" />
 
 </LinearLayout>
