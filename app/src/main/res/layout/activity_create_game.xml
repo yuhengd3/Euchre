@@ -6,8 +6,7 @@
     android:orientation="vertical"
     tools:context=".createGame">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
@@ -66,6 +65,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Join Game"
+            android:textSize="20dp"
+            android:layout_margin="40dp" />
+
+        <Button
+            android:id="@+id/introButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Introduction"
             android:textSize="20dp"
             android:layout_margin="40dp" />
 

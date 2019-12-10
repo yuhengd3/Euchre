@@ -211,5 +211,15 @@ public class createGame extends AppCompatActivity {
         socket.on("err", onError);
 
         socket.on("gameStart", onGameStart);
+
+        //Intro
+        Button introButton = findViewById(R.id.introButton);
+        introButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent introIntent = new Intent(createGame.this, IntroActivity.class);
+                startActivity(introIntent);
+            }
+        });
     }
 }
